@@ -1,0 +1,73 @@
+###### STAGES #################################################################
+stages:
+  - install
+  - test
+  - build
+  - publish
+
+###### TEMPLATES ##############################################################
+.general: &general
+  tags:
+    - devaus
+  variables:
+    GIT_STRATEGY: fetch
+
+.release: &release
+  <<: *general
+  only:
+    - release
+
+###### JOBS ###################################################################
+install:
+  <<: *general
+  stage: install
+  artifacts:
+    paths:
+      - node_modules
+    expire_in: 1 day
+  script:
+    - yarn install
+
+lint:
+  <<: *general
+  stage: test
+  dependencies:
+    - install
+  script:
+    - yarn lint
+
+test:
+  <<: *general
+  stage: test
+  dependencies:
+    - install
+  artifacts:
+    paths:
+      - coverage
+    expire_in: 1 month
+  script:
+    - yarn test --ci --coverage
+
+# Run the jobs below only for `release` branch.
+build:
+  <<: *release
+  stage: build
+  dependencies:
+    - install
+  artifacts:
+    paths:
+      - dist
+    expire_in: 1 day
+  script:
+    - yarn build
+
+publish to npm:
+  <<: *release
+  stage: publish
+  dependencies:
+    - build
+  allow_failure: false
+  script:
+    - export PACKAGE_VERSION=$(node -p -e "require('./package.json').version")
+    - echo "Publish version ${PACKAGE_VERSION}"
+    - npm publish && git tag ${PACKAGE_VERSION} && git push --tags
