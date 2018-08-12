@@ -45,7 +45,7 @@
     "require-yield": [1],
     "valid-jsdoc": [2, {
       "prefer": {
-          "return": "returns"
+        "return": "returns"
       }
     }],
     "require-jsdoc": ["error", {

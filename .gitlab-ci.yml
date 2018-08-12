@@ -48,6 +48,23 @@ test:
   script:
     - yarn test --ci --coverage
 
+license_management:
+  <<: *general
+  stage: test
+  image: docker:stable
+  variables:
+    DOCKER_DRIVER: overlay2
+  allow_failure: true
+  services:
+    - docker:stable-dind
+  script:
+    - export LICENSE_MANAGEMENT_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
+    - docker run
+        --volume "$PWD:/code"
+        "registry.gitlab.com/gitlab-org/security-products/license-management:$LICENSE_MANAGEMENT_VERSION" analyze /code
+  artifacts:
+    paths: [gl-license-management-report.json]
+
 # Run the jobs below only for `release` branch.
 build:
   <<: *release
@@ -69,5 +86,5 @@ publish to npm:
   allow_failure: false
   script:
     - export PACKAGE_VERSION=$(node -p -e "require('./package.json').version")
-    - echo "Publish version ${PACKAGE_VERSION}"
-    - npm publish && git tag ${PACKAGE_VERSION} && git push --tags
+    - echo "Publish version v${PACKAGE_VERSION}"
+    - npm publish && git tag v${PACKAGE_VERSION} && git push --tags
