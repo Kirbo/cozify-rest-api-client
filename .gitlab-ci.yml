@@ -8,7 +8,7 @@ stages:
 ###### TEMPLATES ##############################################################
 .general: &general
   tags:
-    - devaus
+    - gitlab
   variables:
     GIT_STRATEGY: fetch
 
