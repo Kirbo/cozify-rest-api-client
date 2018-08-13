@@ -46,7 +46,7 @@ test:
       - coverage
     expire_in: 1 month
   script:
-    - yarn test --ci --coverage
+    - yarn test --ci --color --coverage
 
 # license_management:
 #   <<: *general
