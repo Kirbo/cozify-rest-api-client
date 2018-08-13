@@ -7,7 +7,7 @@ stages:
 
 ###### TEMPLATES ##############################################################
 .general: &general
-  image: 8.11.3-jessie
+  image: node:8.11
   tags:
     - gitlab-org
   variables:
@@ -83,6 +83,8 @@ build:
 publish to npm:
   <<: *release
   stage: publish
+  tags:
+    - devaus
   dependencies:
     - build
   allow_failure: false
