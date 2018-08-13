@@ -69,7 +69,7 @@ publish to npm:
     - build
   allow_failure: false
   script:
-    - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}'>.npmrc
+    - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > .npmrc
     - export PACKAGE_VERSION=$(node -p -e "require('./package.json').version")
-    - echo "Publish version v${PACKAGE_VERSION}"
+    - echo "Publish & Tag version v${PACKAGE_VERSION}"
     - npm publish && git tag v${PACKAGE_VERSION} && git push --tags

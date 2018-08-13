@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Cozify REST API Node.js client",
   "repository": "git@github.com:kirbo/cozify-rest-api-client.git",
-  "author": "Kimmo Saari <kirbownz@me.com>",
+  "author": "Kimmo Saari <kirbo@kirbo-designs.com>",
   "license": "MIT",
   "scripts": {
     "build": "cross-env NODE_ENV=build npx babel src --out-dir dist",
