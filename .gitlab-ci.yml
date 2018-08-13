@@ -7,8 +7,9 @@ stages:
 
 ###### TEMPLATES ##############################################################
 .general: &general
+  image: 8.11.3-jessie
   tags:
-    - gitlab
+    - gitlab-org
   variables:
     GIT_STRATEGY: fetch
 
