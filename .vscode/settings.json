@@ -1,0 +1,5 @@
+{
+  "gitlab.instanceUrl": "https://gitlab.com",
+  "tslint.autoFixOnSave": true,
+  "eslint.enable": false
+}
