@@ -2,15 +2,14 @@ import axios from 'axios';
 import * as fs from 'fs';
 import * as path from 'path';
 
+import { IConfigType, ICozifyClientConfig } from './types';
+
 import CONSTANTS from '../../utils/contants';
 import GENERIC_CONSTANTS from './constants';
-import { IConfigType, ICozifyClientConfig } from './types';
 
 const { TIMES: { MINUTE } } = CONSTANTS;
 
-/**
- * Generic class to extend.
- */
+/** Generic class to extend. */
 class GenericClass {
   protected axios: any;
   protected config: ICozifyClientConfig;
@@ -24,29 +23,24 @@ class GenericClass {
 
     this.axios = axios.create(confs);
     this.configPath = path.resolve(GENERIC_CONSTANTS.baseDir, 'config.json');
-    this.readConfig();
+    this.config = this.configRead();
   }
 
-  /**
-   * Does config file exist.
-   */
+  /** Does config file exist or not. */
   public configExists = () => (
     fs.existsSync(this.configPath)
   )
 
-  /**
-   * Reads the config file into memory.
-   */
-  public readConfig = () => {
+  /** Read the config file into memory. */
+  public configRead = () => {
     if (this.configExists()) {
-      this.config = JSON.parse(fs.readFileSync(this.configPath).toString());
+      return JSON.parse(fs.readFileSync(this.configPath).toString());
     }
+    return null;
   }
 
-  /**
-   * Write config file.
-   */
-  public writeConfig = (config: ICozifyClientConfig) => {
+  /** Write config file. */
+  public configWrite = (config: ICozifyClientConfig) => {
     fs.writeFileSync(this.configPath, JSON.stringify(config, null, 2));
   }
 }
