@@ -1,47 +1,86 @@
 import axios from 'axios';
-import * as fs from 'fs';
+import * as fs from 'fs-extra';
 import * as path from 'path';
 
-import { IConfigType, ICozifyClientConfig } from './types';
-
 import CONSTANTS from '../../utils/contants';
-import GENERIC_CONSTANTS from './constants';
+import TIMES from '../../utils/times';
+import { Axios, AxiosHeaders, IAxiosOptions } from '../../utils/types';
 
-const { TIMES: { MINUTE } } = CONSTANTS;
+import { ICozifyClientConfig } from './types';
+
+const { MINUTE } = TIMES;
 
 /** Generic class to extend. */
 class GenericClass {
-  protected axios: any;
-  protected config: ICozifyClientConfig;
+  protected axios: Axios;
+  public config: ICozifyClientConfig;
+  protected axiosOptions: IAxiosOptions;
   public configPath: string;
 
-  constructor(config: IConfigType) {
-    const confs: object = {
+  constructor(config: IAxiosOptions = {}) {
+    fs.ensureDirSync(CONSTANTS.BASE_DIR);
+
+    this.configPath = path.resolve(CONSTANTS.BASE_DIR, 'config.json');
+    this.config = this.configRead();
+    this.axiosOptions = {
       timeout: 2 * MINUTE,
+      headers: {
+        ...this.getAxiosHeaders(),
+      },
       ...config,
     };
 
-    this.axios = axios.create(confs);
-    this.configPath = path.resolve(GENERIC_CONSTANTS.baseDir, 'config.json');
-    this.config = this.configRead();
+    this.createAxiosInstance(this.axiosOptions);
+  }
+
+  /** Create new axios instance */
+  protected createAxiosInstance = (config: IAxiosOptions) => {
+    this.axios = axios.create(config)
+  }
+
+  /** Get axios headers */
+  protected getAxiosHeaders = (): AxiosHeaders => {
+    let headers = {};
+
+    if (this.config.account.token) {
+      headers = {
+        'Authorization': this.config.account.token,
+      };
+    }
+
+    return headers;
+  }
+
+  /** Set axios options */
+  protected setAxiosOptions = (options: IAxiosOptions): IAxiosOptions => {
+    this.axiosOptions = options;
+    return this.axiosOptions;
   }
 
   /** Does config file exist or not. */
-  public configExists = () => (
+  protected configExists = (): boolean => (
     fs.existsSync(this.configPath)
   )
 
   /** Read the config file into memory. */
-  public configRead = () => {
+  protected configRead = (): ICozifyClientConfig => {
     if (this.configExists()) {
       return JSON.parse(fs.readFileSync(this.configPath).toString());
     }
-    return null;
+
+    return {
+      account: {
+        token: '',
+      },
+      hubs: [],
+    };
   }
 
   /** Write config file. */
-  public configWrite = (config: ICozifyClientConfig) => {
-    fs.writeFileSync(this.configPath, JSON.stringify(config, null, 2));
+  protected configWrite = (config: ICozifyClientConfig): ICozifyClientConfig => {
+    this.config = config;
+    fs.writeFileSync(this.configPath, JSON.stringify(this.config, null, 2));
+    return this.config;
   }
 }
 

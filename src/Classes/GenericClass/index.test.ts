@@ -5,7 +5,7 @@ import GenericClass from '.';
 
 export { default as GenericClass } from './index';
 
-const GenericClassTest = new GenericClass({});
+const GenericClassTest = new GenericClass();
 
 describe('GenericClass', () => {
   test('this.configPath should match', () => {

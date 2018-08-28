@@ -1,5 +1,8 @@
-import { IConfigType } from '../GenericClass/types';
+interface IHub {
+  id: string;
+  token: string;
+}
 
 export {
-  IConfigType,
+  IHub,
 };
