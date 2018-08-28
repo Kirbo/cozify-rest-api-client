@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsc",
     "start": "ts-node example.ts",
-    "lint": "tslint -c tslint.js src/*.ts src/**/*.ts",
+    "lint": "tslint -c tslint.json 'src/*.ts src/**/*.ts'",
     "test": "yarn test:debug --silent",
     "test:debug": "cross-env NODE_ENV=test jest --verbose --forceExit --detectOpenHandles"
   },

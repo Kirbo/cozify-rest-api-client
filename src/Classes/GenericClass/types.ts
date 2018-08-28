@@ -1,21 +1,15 @@
-interface IConfigType {
-  timeout?: number;
-  headers?: object;
-  baseURL?: string;
-}
-
 interface IHubObject {
-  name: string;
+  id: string;
+  token: string;
 }
 
 interface ICozifyClientConfig {
   account: {
     token: string,
   };
-  hubs: [IHubObject?];
+  hubs: IHubObject[];
 }
 
 export {
-  IConfigType,
   ICozifyClientConfig,
 };
