@@ -7,7 +7,7 @@ interface ICozifyClientConfig {
   account: {
     token: string,
   };
-  hubs: Array<IHubObject>;
+  hubs: IHubObject[];
 }
 
 export {

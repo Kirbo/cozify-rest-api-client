@@ -14,7 +14,7 @@ import { IDevice } from './types';
  */
 class Hub extends GenericClass {
   constructor(config: IAxiosOptions) {
-    super(config)
+    super(config);
     if (this.config.hubs && this.config.hubs.length > 0) {
       const hubToken: string = this.config.hubs[0].token;
       this.createHubInstance(hubToken);
@@ -36,14 +36,14 @@ class Hub extends GenericClass {
       headers: {
         ...this.axiosOptions.headers,
         'X-Hub-Key': hubKey,
-      }
+      },
     })
   )
 
   /** Create hub instance */
   public createHubInstance = (hubkey: string) => {
     this.createAxiosInstance(
-      this.setHubKey(hubkey)
+      this.setHubKey(hubkey),
     );
   }
 

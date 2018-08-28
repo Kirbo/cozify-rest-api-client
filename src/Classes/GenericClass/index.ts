@@ -12,10 +12,10 @@ const { MINUTE } = TIMES;
 
 /** Generic class to extend. */
 class GenericClass {
-  protected axios: Axios;
   public config: ICozifyClientConfig;
-  protected axiosOptions: IAxiosOptions;
   public configPath: string;
+  protected axios: Axios;
+  protected axiosOptions: IAxiosOptions;
 
   constructor(config: IAxiosOptions = {}) {
     fs.ensureDirSync(CONSTANTS.BASE_DIR);
@@ -35,7 +35,7 @@ class GenericClass {
 
   /** Create new axios instance */
   protected createAxiosInstance = (config: IAxiosOptions) => {
-    this.axios = axios.create(config)
+    this.axios = axios.create(config);
   }
 
   /** Get axios headers */
@@ -44,7 +44,7 @@ class GenericClass {
 
     if (this.config.account.token) {
       headers = {
-        'Authorization': this.config.account.token,
+        Authorization: this.config.account.token,
       };
     }
 

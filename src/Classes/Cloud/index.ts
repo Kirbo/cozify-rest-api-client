@@ -38,7 +38,7 @@ class Cloud extends GenericClass {
     this.axios.get('/user/hubkeys')
       .then((response: IAxiosResponse) => {
         const { data } = response;
-        const hubs = Object.keys(data).map(id => ({
+        const hubs = Object.keys(data).map((id) => ({
           id,
           token: data[id],
         }));
