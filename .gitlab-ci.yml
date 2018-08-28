@@ -10,6 +10,8 @@ stages:
   image: node:8.11
   tags:
     - gitlab-org
+    - devaus
+    - docker
   variables:
     GIT_STRATEGY: fetch
 
