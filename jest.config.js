@@ -6,14 +6,25 @@ module.exports = {
   ],
   coverageDirectory: 'coverage',
   coverageReporters: [
-    'text',
     'html',
+    'json',
+    'lcov',
+    'text-summary',
   ],
   notify: true,
-  testMatch: [
-    '**/src/**.test.js',
-  ],
   testPathIgnorePatterns: [
     '/node_modules/',
+  ],
+  transform: {
+    '^.+\\.tsx?$': 'ts-jest',
+  },
+  testRegex: 'src/.*\\.test\\.(jsx?|tsx?)$',
+  moduleFileExtensions: [
+    'ts',
+    'tsx',
+    'js',
+    'jsx',
+    'json',
+    'node',
   ],
 };

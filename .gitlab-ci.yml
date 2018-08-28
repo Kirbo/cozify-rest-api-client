@@ -2,7 +2,7 @@
 stages:
   - install
   - test
-  - build
+  - pre-publish
   - publish
 
 ###### TEMPLATES ##############################################################
@@ -12,6 +12,9 @@ stages:
     - gitlab-org
   variables:
     GIT_STRATEGY: fetch
+
+.pre-publish: &pre-publish
+  <<: *general
 
 .release: &release
   <<: *general
@@ -49,10 +52,9 @@ test:
   script:
     - yarn test --ci --color --coverage
 
-# Run the jobs below only for `release` branch.
 build:
-  <<: *release
-  stage: build
+  <<: *pre-publish
+  stage: pre-publish
   dependencies:
     - install
   artifacts:
@@ -61,6 +63,8 @@ build:
     expire_in: 1 day
   script:
     - yarn build
+
+# Run the jobs below only for `release` branch.
 
 publish to npm:
   <<: *release
