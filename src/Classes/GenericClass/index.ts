@@ -1,12 +1,10 @@
-import axios from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
 import CONSTANTS from '../../utils/contants';
 import TIMES from '../../utils/times';
-import { Axios, AxiosHeaders, IAxiosOptions } from '../../utils/types';
-
-import { ICozifyClientConfig } from './types';
+import { RequestHeaders, ICozifyClientConfig } from '../../types';
 
 const { MINUTE } = TIMES;
 
@@ -14,10 +12,10 @@ const { MINUTE } = TIMES;
 class GenericClass {
   public config: ICozifyClientConfig;
   public configPath: string;
-  protected axios: Axios;
-  protected axiosOptions: IAxiosOptions;
+  protected axios: AxiosInstance;
+  protected axiosOptions: AxiosRequestConfig;
 
-  constructor(config: IAxiosOptions = {}) {
+  constructor(config: AxiosRequestConfig = {}) {
     fs.ensureDirSync(CONSTANTS.BASE_DIR);
 
     this.configPath = path.resolve(CONSTANTS.BASE_DIR, 'config.json');
@@ -34,12 +32,12 @@ class GenericClass {
   }
 
   /** Create new axios instance */
-  protected createAxiosInstance = (config: IAxiosOptions) => {
+  protected createAxiosInstance = (config: AxiosRequestConfig) => {
     this.axios = axios.create(config);
   }
 
   /** Get axios headers */
-  protected getAxiosHeaders = (): AxiosHeaders => {
+  protected getAxiosHeaders = (): RequestHeaders => {
     let headers = {};
 
     if (this.config.account.token) {
@@ -52,7 +50,7 @@ class GenericClass {
   }
 
   /** Set axios options */
-  protected setAxiosOptions = (options: IAxiosOptions): IAxiosOptions => {
+  protected setAxiosOptions = (options: AxiosRequestConfig): AxiosRequestConfig => {
     this.axiosOptions = options;
     return this.axiosOptions;
   }

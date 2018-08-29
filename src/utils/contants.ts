@@ -1,14 +1,14 @@
 /**
  * Generic constants are defined here.
  */
+import { AxiosRequestConfig } from 'axios';
 
-import { IAxiosOptions } from './types';
 import { GET_BASE_DIR } from './functions';
 
 const BASE_URL: string = 'https://cloud2.cozify.fi/ui/0.2';
 const CC_VERSION: string = '1.10';
 
-const DEFAULT_CONFIG: IAxiosOptions = {
+const DEFAULT_CONFIG: AxiosRequestConfig = {
   baseURL: BASE_URL,
 };
 
