@@ -12,11 +12,13 @@ import {
 // }
 
 
-// (async () => {
-//   await Cloud.getHubKeys();
-//   const hubToken: string = Cloud.config.hubs[0].token;
-//   Hub.createHubInstance(hubToken);
-//   await Hub.getDevices();
-// })();
+(async () => {
+  // await Cloud.getHubKeys();
+  // const hubToken: string = Cloud.config.hubs[0].token;
+  // Hub.createHubInstance(hubToken);
+  const devices = await Hub.getDevices();
+  devices.forEach((device) => {
+    console.info('device', device);
+  });
+})();
 
-Hub.getDevices();

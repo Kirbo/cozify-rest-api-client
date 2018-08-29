@@ -1,19 +1,20 @@
 import {
   AxiosPromise,
-  IAxiosOptions,
-  IAxiosResponse,
-  Payload,
-} from '../../utils/types';
+  AxiosResponse,
+  AxiosRequestConfig,
+} from 'axios';
+
+import { Payload } from '../../types';
 import CONSTANTS from '../../utils/contants';
 import { CATCH_ERROR } from '../../utils/functions';
 import GenericClass from '../GenericClass';
-import { IDevice } from './types';
+import { ICozifyDevice } from '../../types';
 
 /**
  * Cozify hub class.
  */
 class Hub extends GenericClass {
-  constructor(config: IAxiosOptions) {
+  constructor(config: AxiosRequestConfig) {
     super(config);
     if (this.config.hubs && this.config.hubs.length > 0) {
       const hubToken: string = this.config.hubs[0].token;
@@ -26,11 +27,12 @@ class Hub extends GenericClass {
     this.axios({
       method: !payload ? 'get' : 'put',
       url: `/hub/remote${endpoint}`,
+      data: payload,
     })
   )
 
   /** Set hub key */
-  public setHubKey = (hubKey: string): IAxiosOptions => (
+  public setHubKey = (hubKey: string): AxiosRequestConfig => (
     this.setAxiosOptions({
       ...this.axiosOptions,
       headers: {
@@ -48,10 +50,10 @@ class Hub extends GenericClass {
   }
 
   /** Get hub devices */
-  public getDevices = (payload: Payload = null): AxiosPromise => (
+  public getDevices = (payload: Payload = null): Promise<ICozifyDevice[]> => (
     this.executeRemote(`/cc/${CONSTANTS.CC_VERSION}/devices`, payload)
-      .then((response: IAxiosResponse): IDevice[] => (
-        Object.values(response.data)
+      .then(({ data }: AxiosResponse): ICozifyDevice[] => (
+        Object.values(data)
       ))
       .catch(CATCH_ERROR)
   )

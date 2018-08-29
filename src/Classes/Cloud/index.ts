@@ -1,11 +1,11 @@
+import { AxiosPromise, AxiosResponse } from 'axios';
 import * as qs from 'qs';
 
 import CONSTANTS from '../../utils/contants';
 import { CATCH_ERROR } from '../../utils/functions';
-import { AxiosPromise, IAxiosResponse } from '../../utils/types';
 import GenericClass from '../GenericClass';
 
-import { IHub } from './types';
+import { ICozifyHub } from '../../types';
 
 /** Cozify cloud class. */
 class Cloud extends GenericClass {
@@ -20,24 +20,23 @@ class Cloud extends GenericClass {
   public requestToken = (email: string, password: string): Promise<string> => (
     this.axios
       .post('/user/emaillogin', qs.stringify({ email, password }))
-      .then((response: IAxiosResponse): string => {
+      .then(({ data }: AxiosResponse): string => {
         this.configWrite({
           ...this.config,
           account: {
             ...this.config.account,
-            token: response.data,
+            token: data,
           },
         });
-        return response.data;
+        return data;
       })
       .catch(CATCH_ERROR)
   )
 
   /** Get list of hubs */
-  public getHubKeys = async (): Promise<IHub[]> => (
+  public getHubKeys = async (): Promise<ICozifyHub[]> => (
     this.axios.get('/user/hubkeys')
-      .then((response: IAxiosResponse) => {
-        const { data } = response;
+      .then(({ data }: AxiosResponse) => {
         const hubs = Object.keys(data).map((id) => ({
           id,
           token: data[id],
