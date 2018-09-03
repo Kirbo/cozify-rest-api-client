@@ -2,6 +2,7 @@ module.exports = {
   "bail": true,
   "collectCoverage": true,
   "collectCoverageFrom": [
+    "!**/src/types/**",
     "**/src/**.{ts,tsx}",
   ],
   "coverageDirectory": "coverage",
